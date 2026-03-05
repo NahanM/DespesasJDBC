@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Despesas</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+	
+	<header class="header">
+	        <h1>Gestão de Despesas</h1>
+	        	<div class="header-info">
+	            	<span class="total-label">Total:</span>
+	            	<span class="total-valor" id="total-geral">R$ 0,00</span>
+	        	</div>
+	    </header>
+		
+		<div class="actions-bar">
+		        <button class="btn btn-primary" id="btn-nova-despesa">
+		            + Nova Despesa
+		        </button>
+				
+				<div class="filter-group">
+				            <label for="filtro-categoria">Filtrar:</label>
+				            <select id="filtro-categoria" class="select">
+				                <option value="">Todas</option>
+				                <option value="1">Alimentação</option>
+				                <option value="2">Transporte</option>
+				                <option value="3">Lazer</option>
+				                <option value="4">Saúde</option>
+				                <option value="5">Educação</option>
+				            </select>
+				        </div>
+				    </div>
+					
+					<main class="container">
+					    <div id="lista-despesas" class="lista-despesas">
+					        <!-- Despesas serão inseridas aqui pelo JavaScript -->
+					    </div>
+						
+
+						       <div id="empty-state" class="empty-state" style="display: none;">
+						           <p>📋 Nenhuma despesa cadastrada</p>
+						           <p class="empty-subtitle">Clique em "Nova Despesa" para começar</p>
+						       </div>
+						   </main>
+						   
+						    <div id="modal-despesa" class="modal">
+						           <div class="modal-content">
+						               <div class="modal-header">
+						                   <h2 id="modal-titulo">Nova Despesa</h2>
+						                   <button class="btn-close" id="btn-fechar-modal">&times;</button>
+						               </div>
+						               
+						               <form id="form-despesa" class="form">
+						                   <input type="hidden" id="despesa-id">
+						                   
+						                   <div class="form-group">
+						                       <label for="descricao">Descrição *</label>
+						                       <input type="text" id="descricao" class="input" required 
+						                              placeholder="Ex: Almoço no restaurante">
+						                   </div>
+						                   
+						                   <div class="form-row">
+						                       <div class="form-group">
+						                           <label for="valor">Valor *</label>
+						                           <input type="number" id="valor" class="input" required 
+						                                  step="0.01" min="0.01" placeholder="0.00">
+						                       </div>
+						                       
+						                       <div class="form-group">
+						                           <label for="data">Data *</label>
+						                           <input type="date" id="data" class="input" required>
+						                       </div>
+						                   </div>
+						                   
+						                   <div class="form-group">
+						                       <label for="categoria">Categoria *</label>
+						                       <select id="categoria" class="input" required>
+						                           <option value="">Selecione...</option>
+						                           <option value="1">Alimentação</option>
+						                           <option value="2">Transporte</option>
+						                           <option value="3">Lazer</option>
+						                           <option value="4">Saúde</option>
+						                           <option value="5">Educação</option>
+						                       </select>
+						                   </div>
+						                   
+						                   <div class="form-actions">
+						                       <button type="button" class="btn btn-secondary" id="btn-cancelar">
+						                           Cancelar
+						                       </button>
+						                       <button type="submit" class="btn btn-primary">
+						                           Salvar
+						                       </button>
+						                   </div>
+						               </form>
+						           </div>
+						       </div>
+
+						       <script src="js/app.js"></script>
+						   </body>
+						   </html>

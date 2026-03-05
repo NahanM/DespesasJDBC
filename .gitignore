@@ -1,0 +1,47 @@
+# =========================
+# Eclipse
+# =========================
+.metadata/
+.classpath
+.project
+.settings/
+.loadpath
+.recommenders/
+
+# =========================
+# Java / Compilação
+# =========================
+*.class
+
+# Arquivos de log
+*.log
+
+# =========================
+# Pasta de build
+# =========================
+/bin/
+/build/
+/target/
+
+# =========================
+# Maven
+# =========================
+/target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+
+# =========================
+# Gradle
+# =========================
+.gradle/
+build/
+
+# =========================
+# Arquivos do sistema
+# =========================
+.DS_Store
+Thumbs.db
