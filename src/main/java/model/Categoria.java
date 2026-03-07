@@ -11,13 +11,13 @@ public class Categoria {
 	    
 	    // Construtor com nome (para criar nova categoria)
 	    public Categoria(String nome) {
-	        this.nome = nome;
+	        setNome(nome);
 	    }
 	    
 	    // Construtor completo (quando buscar do banco)
 	    public Categoria(Integer id, String nome) {
 	        this.id = id;
-	        this.nome = nome;
+	        setNome(nome);
 	    }
 	    
 	    public Integer getId() {
@@ -33,6 +33,9 @@ public class Categoria {
 	    }
 	    
 	    public void setNome(String nome) {
+	        if(nome == null || nome.isEmpty()){
+	            throw new IllegalArgumentException("Nome não pode ser vazio");
+	        }
 	        this.nome = nome;
 	    }
 	    
