@@ -10,9 +10,17 @@ public class ConexaoDB {
 	private static final String USUARIO = "senaipato";
 	private static final String SENHA = "SenaiPatoBranco";
 	
-	public static Connection getConexao() throws SQLException {
-		Connection conexao = DriverManager.getConnection(URL, USUARIO, SENHA);
-		System.out.println("Conexão deu boa");
+	public static Connection getConexao(){
+		Connection conexao = null;
+		try {
+			Class.forName("org.postgresql.Driver");
+			conexao = DriverManager.getConnection(URL, USUARIO, SENHA);
+			System.out.println("Conexão deu boa");
+		}
+		catch(Exception ex) {
+			System.out.println("Deu ruim");
+			ex.printStackTrace();
+		}
 		return conexao;
 	}
 	
