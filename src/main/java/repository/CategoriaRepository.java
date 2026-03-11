@@ -11,149 +11,153 @@ import model.Categoria;
 import util.ConexaoDB;
 
 public class CategoriaRepository {
-    
-	private Categoria mapearCategoria(ResultSet rs) throws SQLException {
-	    Integer id = rs.getInt("id");
-	    String nome = rs.getString("nome");
-	    
-	    return new Categoria(id, nome);
-	}
-	
-	public List<Categoria> listarTodas() {
-	    List<Categoria> categorias = new ArrayList<>();
-	    
-	    String sql = "SELECT id, nome FROM categoria ORDER BY nome";
-	    
-	    try (
-	        Connection conexao = ConexaoDB.getConexao();
-	        PreparedStatement stmt = conexao.prepareStatement(sql);
-	        ResultSet rs = stmt.executeQuery()
-	    ) {
-	        
-	        while (rs.next()) {
-	            Categoria categoria = mapearCategoria(rs);
-	            
-	            categorias.add(categoria);
-	        }
 
-	    } catch (SQLException e) {
-	        System.err.println("Erro ao listar categorias");
-	        System.err.println("Detalhes: " + e.getMessage());
-	    }
+    private Categoria mapearCategoria(ResultSet rs) throws SQLException {
+        Integer id = rs.getInt("id");
+        String nome = rs.getString("nome");
 
-	    return categorias;
-	}
-    
-	public Categoria buscarPorId(int id) {
+        return new Categoria(id, nome);
+    }
 
-	    if (id <= 0) {
-	        return null;
-	    }
+    public List<Categoria> listarTodas() {
 
-	    String sql = "SELECT id, nome FROM categoria WHERE id = ?"; 
+        List<Categoria> categorias = new ArrayList<>();
 
-	    try (
-	        Connection conexao = ConexaoDB.getConexao();
-	        PreparedStatement stmt = conexao.prepareStatement(sql)
-	    ) {
+        String sql = "SELECT id, nome FROM categoria ORDER BY nome";
 
-	        stmt.setInt(1, id);
+        try (
+            Connection conexao = ConexaoDB.getConexao();
+            PreparedStatement stmt = conexao.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery()
+        ) {
 
-	        try (ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                Categoria categoria = mapearCategoria(rs);
+                categorias.add(categoria);
+            }
 
-	            if (rs.next()) {
-	            	return mapearCategoria(rs);
-	            }
-	        }
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar categorias");
+            System.err.println("Detalhes: " + e.getMessage());
+        }
 
-	    } catch (SQLException e) {
-	        System.err.println("Erro ao buscar categoria por id");
-	        System.err.println("Detalhes: " + e.getMessage());
-	    }
+        return categorias;
+    }
 
-	    return null;
-	}
-    
-	public boolean salvar(Categoria categoria) {
+    public Categoria buscarPorId(int id) {
 
-	    if (categoria == null || categoria.getNome() == null) {
-	        return false;
-	    }
+        if (id <= 0) {
+            return null;
+        }
 
-	    String sql = "INSERT INTO categoria (nome) VALUES (?)";
+        String sql = "SELECT id, nome FROM categoria WHERE id = ?";
 
-	    try (
-	        Connection conexao = ConexaoDB.getConexao();
-	        PreparedStatement stmt = conexao.prepareStatement(sql)
-	    ) {
+        try (
+            Connection conexao = ConexaoDB.getConexao();
+            PreparedStatement stmt = conexao.prepareStatement(sql)
+        ) {
 
-	        stmt.setString(1, categoria.getNome());
+            stmt.setInt(1, id);
 
-	        int linhasAfetadas = stmt.executeUpdate();
+            try (ResultSet rs = stmt.executeQuery()) {
 
-	        return linhasAfetadas > 0;
+                if (rs.next()) {
+                    return mapearCategoria(rs);
+                }
+            }
 
-	    } catch (SQLException e) {
-	        System.err.println("Erro ao salvar categoria");
-	        System.err.println("Detalhes: " + e.getMessage());
-	    }
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar categoria por id");
+            System.err.println("Detalhes: " + e.getMessage());
+        }
 
-	    return false;
-	}
-    
-	public boolean atualizar(Categoria categoria) {
+        return null;
+    }
 
-	    if (categoria == null || categoria.getId() <= 0 || categoria.getNome() == null) {
-	        return false;
-	    }
+    public boolean salvar(Categoria categoria) {
 
-	    String sql = "UPDATE categoria SET nome = ? WHERE id = ?";
+        if (categoria == null || categoria.getNome() == null) {
+            return false;
+        }
 
-	    try (
-	        Connection conexao = ConexaoDB.getConexao();
-	        PreparedStatement stmt = conexao.prepareStatement(sql)
-	    ) {
+        String sql = "INSERT INTO categoria (nome) VALUES (?) RETURNING id";
 
-	        stmt.setString(1, categoria.getNome());
-	        stmt.setInt(2, categoria.getId());
+        try (
+            Connection conexao = ConexaoDB.getConexao();
+            PreparedStatement stmt = conexao.prepareStatement(sql)
+        ) {
 
-	        int linhasAfetadas = stmt.executeUpdate();
+            stmt.setString(1, categoria.getNome());
 
-	        return linhasAfetadas > 0;
+            try (ResultSet rs = stmt.executeQuery()) {
 
-	    } catch (SQLException e) {
-	        System.err.println("Erro ao atualizar categoria");
-	        System.err.println("Detalhes: " + e.getMessage());
-	    }
+                if (rs.next()) {
+                    int idGerado = rs.getInt("id");
+                    categoria.setId(idGerado);
+                    return true;
+                }
+            }
 
-	    return false;
-	}
-    
-	public boolean deletar(int id) {
+        } catch (SQLException e) {
+            System.err.println("Erro ao salvar categoria");
+            System.err.println("Detalhes: " + e.getMessage());
+        }
 
-	    if (id <= 0) {
-	        return false;
-	    }
+        return false;
+    }
 
-	    String sql = "DELETE FROM categoria WHERE id = ?";
+    public boolean atualizar(Categoria categoria) {
 
-	    try (
-	        Connection conexao = ConexaoDB.getConexao();
-	        PreparedStatement stmt = conexao.prepareStatement(sql)
-	    ) {
+        if (categoria == null || categoria.getId() <= 0 || categoria.getNome() == null) {
+            return false;
+        }
 
-	        stmt.setInt(1, id);
+        String sql = "UPDATE categoria SET nome = ? WHERE id = ?";
 
-	        int linhasAfetadas = stmt.executeUpdate();
+        try (
+            Connection conexao = ConexaoDB.getConexao();
+            PreparedStatement stmt = conexao.prepareStatement(sql)
+        ) {
 
-	        return linhasAfetadas > 0;
+            stmt.setString(1, categoria.getNome());
+            stmt.setInt(2, categoria.getId());
 
-	    } catch (SQLException e) {
-	        System.err.println("Erro ao deletar categoria");
-	        System.err.println("Detalhes: " + e.getMessage());
-	    }
+            int linhasAfetadas = stmt.executeUpdate();
 
-	    return false;
-	}
-    
+            return linhasAfetadas > 0;
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao atualizar categoria");
+            System.err.println("Detalhes: " + e.getMessage());
+        }
+
+        return false;
+    }
+
+    public boolean deletar(int id) {
+
+        if (id <= 0) {
+            return false;
+        }
+
+        String sql = "DELETE FROM categoria WHERE id = ?";
+
+        try (
+            Connection conexao = ConexaoDB.getConexao();
+            PreparedStatement stmt = conexao.prepareStatement(sql)
+        ) {
+
+            stmt.setInt(1, id);
+
+            int linhasAfetadas = stmt.executeUpdate();
+
+            return linhasAfetadas > 0;
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao deletar categoria");
+            System.err.println("Detalhes: " + e.getMessage());
+        }
+
+        return false;
+    }
 }
