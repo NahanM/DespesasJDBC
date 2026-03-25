@@ -58,3 +58,49 @@ body {
     font-weight: 700;
     color: #ffffff;
 }
+
+/* ================================
+   TABELA DE DESPESAS
+   ================================ */
+
+.tabela-container {
+    background-color: #252840;
+    border: 1px solid #32364a;
+    border-radius: 10px;
+    padding: 24px;
+}
+
+.tabela-titulo {
+    color: #ffffff;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #32364a;
+    margin-bottom: 16px;
+}
+
+.table thead th {
+    color: #8b92a8;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+    border-bottom: 1px solid #32364a;
+}
+
+.table tbody td {
+    border-color: #32364a;
+    font-size: 0.9rem;
+    vertical-align: middle;
+} 
+
+.table tbody tr:hover {
+    background-color: #2d3154;
+}
+
+.table {
+    --bs-table-bg: transparent;
+    --bs-table-color: #ffffff;
+    --bs-table-border-color: #32364a;
+}

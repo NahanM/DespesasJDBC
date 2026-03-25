@@ -21,7 +21,7 @@
 	    <div class="container-fluid">
 
 	        <!-- BLOCO 1: Logo / Nome do sistema -->
-	        <a class="navbar-brand" href="#">💰 FinanceApp</a>
+	        <a class="navbar-brand" href="#">FinanceApp</a>
 
 	        <!-- BLOCO 2: Botão hambúrguer (só aparece em telas pequenas) -->
 	        <button
@@ -38,7 +38,7 @@
 	            <ul class="navbar-nav w-100 justify-content-evenly">
 
 	                <li class="nav-item">
-	                    <a class="nav-link active" href="#">Início</a>
+	                    <a class="nav-link" href="#">Início</a>
 	                </li>
 
 	                <li class="nav-item">
@@ -89,9 +89,126 @@
 
 	        </div>
 	    </div>
+		
+		<!-- REGIÃO: Formulário de nova despesa -->
+		<div class="container-fluid px-4 mt-4">
 
+		    <!-- BLOCO 1: Botão que abre/fecha o formulário -->
+		    <button
+		        class="btn btn-nova-despesa mb-3"
+		        data-bs-toggle="collapse"
+		        data-bs-target="#formNovaDespesa"
+		    >
+		        + Nova Despesa
+		    </button>
+
+		    <!-- BLOCO 2: Formulário (começa escondido) -->
+		    <div class="collapse" id="formNovaDespesa">
+		        <div class="form-container mb-4">
+
+		            <h6 class="form-titulo">Nova Despesa</h6>
+
+		            <div class="row g-3">
+
+		                <!-- Campo: Descrição -->
+		                <div class="col-md-4">
+		                    <label class="form-label" for="inputDescricao">Descrição</label>
+		                    <input
+		                        type="text"
+		                        class="form-control"
+		                        id="inputDescricao"
+		                        placeholder="Ex: Conta de luz"
+		                    >
+		                </div>
+
+		                <!-- Campo: Valor -->
+		                <div class="col-md-2">
+		                    <label class="form-label" for="inputValor">Valor (R$)</label>
+		                    <input
+		                        type="number"
+		                        class="form-control"
+		                        id="inputValor"
+		                        placeholder="Ex: 150.00"
+		                        step="0.01"
+		                        min="0"
+		                    >
+		                </div>
+
+		                <!-- Campo: Data -->
+		                <div class="col-md-2">
+		                    <label class="form-label" for="inputData">Data</label>
+		                    <input
+		                        type="date"
+		                        class="form-control"
+		                        id="inputData"
+		                    >
+		                </div>
+
+		                <!-- Campo: Categoria -->
+		                <div class="col-md-2">
+		                    <label class="form-label" for="inputCategoria">Categoria</label>
+		                    <select class="form-select" id="inputCategoria">
+		                        <option value="">Carregando...</option>
+		                    </select>
+		                </div>
+
+		                <!-- Botão Salvar -->
+		                <div class="col-md-2 d-flex align-items-end">
+		                    <button class="btn btn-salvar w-100" id="btnSalvar">
+		                        Salvar
+		                    </button>
+		                </div>
+
+		            </div>
+		        </div>
+		    </div>
+
+		</div>
+
+		<!-- REGIÃO: Tabela de despesas -->
+		<div class="container-fluid px-4 mt-4">
+		    <div class="tabela-container">
+
+		        <h6 class="tabela-titulo">Lançamentos</h6>
+
+		        <table class="table" id="tabelaDespesas">
+
+		            <thead>
+		                <tr>
+		                    <th>#</th>
+		                    <th>Descrição</th>
+		                    <th>Categoria</th>
+		                    <th>Data</th>
+		                    <th>Valor</th>
+		                </tr>
+		            </thead>
+
+		            <tbody>
+		                <!-- Linha fictícia 1 -->
+		                <tr>
+		                    <td>1</td>
+		                    <td>Conta de luz</td>
+		                    <td>Moradia</td>
+		                    <td>01/06/2025</td>
+		                    <td>R$ 150,00</td>
+		                </tr>
+		                <!-- Linha fictícia 2 -->
+		                <tr>
+		                    <td>2</td>
+		                    <td>Supermercado</td>
+		                    <td>Alimentação</td>
+		                    <td>03/06/2025</td>
+		                    <td>R$ 320,00</td>
+		                </tr>
+		            </tbody>
+
+		        </table>
+
+		    </div>
+		</div>
+		
 	</main>
-
+ 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
