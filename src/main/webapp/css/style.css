@@ -16,7 +16,7 @@ body {
     padding: 12px 24px;
 }
 
-.navbar-brand {
+.navbar-brand { 
     color: #ffffff;
     font-weight: 700;
 }
@@ -41,9 +41,9 @@ body {
     border: 1px solid #32364a;
     border-radius: 10px;
     padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+    display: flex; /*ativa flex box*/
+    flex-direction: column; /*organiza em colunas*/
+    gap: 8px; /*espaço nos elementos internos*/
 }
 
 .card-resumo-label {
@@ -63,24 +63,24 @@ body {
    TABELA DE DESPESAS
    ================================ */
 
-.tabela-container {
-    background-color: #252840;
-    border: 1px solid #32364a;
-    border-radius: 10px;
-    padding: 24px;
+.tabela-container { /*classe tabela-container do html*/
+    background-color: #252840; /*fundo*/
+    border: 1px solid #32364a; /*borda da tabela*/
+    border-radius: 10px;  /*arredonda a borda*/
+    padding: 24px; /*espaço interno*/
 }
 
-.tabela-titulo {
+.tabela-titulo { /*titulo tabela do html*/
     color: #ffffff;
     font-size: 0.85rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1px; /* espaçamento entre letras*/
     padding-bottom: 12px;
     border-bottom: 1px solid #32364a;
     margin-bottom: 16px;
 }
 
-.table thead th {
+.table thead th { /* thead = cabeçalho | th = células */
     color: #8b92a8;
     font-size: 0.78rem;
     text-transform: uppercase;
@@ -89,18 +89,19 @@ body {
     border-bottom: 1px solid #32364a;
 }
 
-.table tbody td {
+.table tbody td { /*tbody = corpo da tabela | td = células*/
     border-color: #32364a;
     font-size: 0.9rem;
     vertical-align: middle;
 } 
 
-.table tbody tr:hover {
+.table tbody tr:hover { /*quando passar emcima da linha tr, muda a cor pro background*/
     background-color: #2d3154;
 }
 
+/*sobreescreve o estilo padrão do bootstrap*/
 .table {
-    --bs-table-bg: transparent;
-    --bs-table-color: #ffffff;
-    --bs-table-border-color: #32364a;
+    --bs-table-bg: transparent; /*remove a cor padrão*/
+    --bs-table-color: #ffffff; /*deixa a cor das letras*/
+    --bs-table-border-color: #32364a; /*borda da tabela*/
 }
