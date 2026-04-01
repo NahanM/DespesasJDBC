@@ -224,7 +224,7 @@ function salvarDespesa() {
         method: "POST",
 
         // cabeçalho informando que estamos enviando JSON
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json; charset=UTF-8" },
 
         // converte o objeto JS para JSON (string) antes de enviar
         body: JSON.stringify(novaDespesa)
@@ -462,8 +462,10 @@ function atualizarCards(despesas) {
     }, despesas[0]);
 
     // atualiza os elementos na tela
-    document.getElementById("totalDespesas").textContent =
-        "R$ " + total.toFixed(2).replace(".", ",");
+    document.getElementById("totalDespesas").textContent = new Intl.NumberFormat(navigator.language, {
+	  style: 'currency',
+	  currency: 'BRL'
+	}).format(total);
 
     document.getElementById("qtdLancamentos").textContent =
         quantidade + " lançamento(s)";
