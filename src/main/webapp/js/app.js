@@ -8,6 +8,7 @@ const CATEGORIAS_URL = "categorias/";
 // FUNÇÃO: carregar despesas
 // ================================
 // faz requisição GET para a API de despesas
+function carregarDespesas() {
 fetch(API_URL)
 
     // recebe a resposta da API
@@ -36,6 +37,7 @@ fetch(API_URL)
     .catch(function(erro) {
         console.error("Falha ao carregar despesas:", erro);
     });
+	}
 
 
 // ================================
@@ -61,10 +63,15 @@ function preencherTabela(despesas) {
             "<td>" + d.descricao + "</td>" +
             "<td>" + d.categoria.nome + "</td>" +
             "<td>" + d.data + "</td>" +
-            "<td>R$ " + d.valor + "</td>";
+            "<td>R$ " + d.valor + "</td>" +
+			"<td>" +
+			    "<button class='btn-editar' onclick='abrirModalEdicao(" + d.id + ")'>Editar</button>" +
+			    "<button class='btn-excluir' onclick='excluirDespesa(" + d.id + ")'>Excluir</button>" +
+			"</td>";
 
         tbody.appendChild(linha); // adiciona a linha criada dentro da tabela
     });
+	atualizarCards(despesas);
 }
 
 // ================================
@@ -243,6 +250,12 @@ function salvarDespesa() {
         // exibe no console a despesa retornada pela API
         console.log("Despesa salva:", despesaSalva);
 
+		// fecha o modal após salvar
+		    const modal = bootstrap.Modal.getInstance(
+		        document.getElementById("modalNovaDespesa")
+		    );
+		    modal.hide();
+		
         // limpa os campos do formulário
         limparFormulario();
 
@@ -283,6 +296,193 @@ function limparFormulario() {
 
 
 // ================================
+// FUNÇÃO: excluir despesa (DELETE)
+// ================================
+function excluirDespesa(id) {
+
+    // PASSO 1: pede confirmação ao usuário
+    const confirmou = confirm("Tem certeza que deseja excluir esta despesa?");
+
+    // PASSO 2: se não confirmou, para aqui
+    if (!confirmou) {
+        return;
+    }
+
+    // PASSO 3: dispara o fetch DELETE
+    fetch(API_URL + id, {
+        method: "DELETE"
+    })
+    .then(function(res) {
+        if (!res.ok) {
+            throw new Error("Erro ao excluir: " + res.status);
+        }
+        // API retorna 204 No Content — sem body para converter
+        carregarDespesas();
+    })
+    .catch(function(erro) {
+        console.error("Falha no DELETE:", erro);
+        alert("Erro ao excluir a despesa. Verifique o console.");
+    });
+}
+
+// ================================
+// FUNÇÃO: abrir modal de edição
+// ================================
+function abrirModalEdicao(id) {
+
+    // PASSO 1: busca os dados atuais da despesa pelo id
+    fetch(API_URL + id)
+        .then(function(res) {
+            if (!res.ok) {
+                throw new Error("Erro ao buscar despesa: " + res.status);
+            }
+            return res.json();
+        })
+        .then(function(despesa) {
+            // PASSO 2: preenche os campos do modal
+            preencherModalEdicao(despesa);
+            // PASSO 3: abre o modal via JavaScript
+            const modal = new bootstrap.Modal(document.getElementById("modalEditarDespesa"));
+            modal.show();
+        })
+        .catch(function(erro) {
+            console.error("Falha ao buscar despesa:", erro);
+        });
+}
+
+
+// ================================
+// FUNÇÃO: preencher campos do modal
+// ================================
+function preencherModalEdicao(despesa) {
+
+    // preenche cada campo com os dados da despesa
+    document.getElementById("editId").value        = despesa.id;
+    document.getElementById("editDescricao").value = despesa.descricao;
+    document.getElementById("editValor").value     = despesa.valor;
+    document.getElementById("editData").value      = despesa.data;
+
+    // preenche o select de categorias do modal
+    const selectEdit = document.getElementById("editCategoria");
+    selectEdit.innerHTML = "";
+
+    fetch("categorias/")
+        .then(function(res) { return res.json(); })
+        .then(function(categorias) {
+            categorias.forEach(function(c) {
+                const opcao = document.createElement("option");
+                opcao.value       = c.id;
+                opcao.textContent = c.nome;
+
+                // marca como selecionada a categoria atual da despesa
+                if (c.id === despesa.categoria.id) {
+                    opcao.selected = true;
+                }
+
+                selectEdit.appendChild(opcao);
+            });
+        });
+}
+
+// ================================
+// FUNÇÃO: salvar edição (PUT)
+// ================================
+function salvarEdicao() {
+
+    // PASSO 1: captura os valores do modal
+    const id          = document.getElementById("editId").value;
+    const descricao   = document.getElementById("editDescricao").value.trim();
+    const valor       = document.getElementById("editValor").value;
+    const data        = document.getElementById("editData").value;
+    const categoriaId = document.getElementById("editCategoria").value;
+
+    // PASSO 2: valida os campos
+    if (!descricao || !valor || !data || !categoriaId) {
+        alert("Preencha todos os campos.");
+        return;
+    }
+
+    // PASSO 3: monta o objeto atualizado
+    const despesaAtualizada = {
+        id:        parseInt(id),
+        descricao: descricao,
+        valor:     parseFloat(valor),
+        data:      data,
+        categoria: {
+            id: parseInt(categoriaId)
+        }
+    };
+
+    // PASSO 4: dispara o fetch PUT
+    fetch(API_URL + id, {
+        method:  "PUT",
+        headers: { "Content-Type": "application/json; charset=UTF-8" },
+        body:    JSON.stringify(despesaAtualizada)
+    })
+    .then(function(res) {
+        if (!res.ok) {
+            throw new Error("Erro ao atualizar: " + res.status);
+        }
+        return res.json();
+    })
+    .then(function(despesaAtualizada) {
+        console.log("Despesa atualizada:", despesaAtualizada);
+
+        // fecha o modal
+        const modal = bootstrap.Modal.getInstance(
+            document.getElementById("modalEditarDespesa")
+        );
+        modal.hide();
+
+        // recarrega a tabela
+        carregarDespesas();
+    })
+    .catch(function(erro) {
+        console.error("Falha no PUT:", erro);
+        alert("Erro ao atualizar. Verifique o console.");
+    });
+}
+
+// ================================
+// FUNÇÃO: atualizar cards de resumo
+// ================================
+function atualizarCards(despesas) {
+
+    // CARD 1: soma todos os valores
+    const total = despesas.reduce(function(acumulador, d) {
+        return acumulador + parseFloat(d.valor);
+    }, 0);
+
+    // CARD 2: quantidade de despesas
+    const quantidade = despesas.length;
+
+    // CARD 3: despesa mais recente
+    const maisRecente = despesas.reduce(function(maisNova, d) {
+        return new Date(d.data) > new Date(maisNova.data) ? d : maisNova;
+    }, despesas[0]);
+
+    // atualiza os elementos na tela
+    document.getElementById("totalDespesas").textContent =
+        "R$ " + total.toFixed(2).replace(".", ",");
+
+    document.getElementById("qtdLancamentos").textContent =
+        quantidade + " lançamento(s)";
+
+    document.getElementById("ultimoLancamento").textContent =
+        maisRecente ? formatarData(maisRecente.data) + " — " + maisRecente.descricao : "—";
+}
+
+
+// ================================
+// FUNÇÃO AUXILIAR: formatar data
+// ================================
+function formatarData(dataISO) {
+    if (!dataISO) return "—";
+    const partes = dataISO.split("-");
+    return partes[2] + "/" + partes[1] + "/" + partes[0];
+}
+
+// ================================
 // EVENTO: quando o HTML terminar de carregar
 // ================================
 document.addEventListener("DOMContentLoaded", function() {
@@ -301,4 +501,5 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("btnSalvar").addEventListener("click", salvarDespesa);
 
     // quando o usuário clicar no botão, executa a função salvarDespesa
+	document.getElementById("btnSalvarEdicao").addEventListener("click", salvarEdicao);
 });
