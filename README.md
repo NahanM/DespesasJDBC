@@ -13,8 +13,7 @@ O foco principal deste projeto é **compreender o funcionamento do backend Java 
 * Manipulação de JSON
 * Estrutura de arquitetura em camadas
 
-Atualmente o projeto está **em desenvolvimento**.
-A parte de **frontend ainda será implementada**, pois neste momento o foco do estudo está no **funcionamento do backend em Java**.
+O projeto está **concluído** como estudo. Além da API, ele tem um frontend simples em HTML, CSS e JavaScript puro que consome os endpoints: lista, cadastra, edita e exclui despesas, com cards de total, quantidade e último lançamento.
 
 ---
 
@@ -110,11 +109,14 @@ Classes utilitárias, como a conexão com o banco de dados.
 
 | Método | Endpoint             | Descrição               |
 | ------ | -------------------- | ----------------------- |
-| GET    | `/api/despesas`      | Lista todas as despesas |
-| GET    | `/api/despesas/{id}` | Busca despesa por ID    |
-| POST   | `/api/despesas`      | Cria uma nova despesa   |
-| PUT    | `/api/despesas`      | Atualiza uma despesa    |
-| DELETE | `/api/despesas/{id}` | Remove uma despesa      |
+| GET    | `/despesas`      | Lista todas as despesas |
+| GET    | `/despesas/{id}` | Busca despesa por ID    |
+| POST   | `/despesas`      | Cria uma nova despesa   |
+| PUT    | `/despesas`      | Atualiza uma despesa    |
+| DELETE | `/despesas/{id}` | Remove uma despesa      |
+
+> No `PUT`, o `id` vai no corpo do JSON, não na URL.
+> Rodando local, a base é `http://localhost:8080/despesas`, então a listagem fica em `http://localhost:8080/despesas/despesas`.
 
 ---
 
@@ -122,9 +124,9 @@ Classes utilitárias, como a conexão com o banco de dados.
 
 ### Criar despesa
 
-POST `/api/despesas`
+POST `/despesas`
 
--- json
+''' json
 {
   "descricao": "Supermercado",
   "valor": 150.00,
@@ -132,14 +134,14 @@ POST `/api/despesas`
   "categoria": {
     "id": 1
   }
-}
+} '''
 
 
 ---
 
-## 📤 Exemplo de Resposta
+## 📤 Exemplo de Resposta (`GET /despesas/5`)
 
--- json
+''' json
 {
   "id": 5,
   "descricao": "Supermercado",
@@ -149,7 +151,7 @@ POST `/api/despesas`
     "id": 1,
     "nome": "Alimentação"
   }
-}
+} '''
 
 ---
 
@@ -176,31 +178,64 @@ POST `/api/despesas`
 
 ---
 
-## ⚙ Como executar o projeto
+## ⚙ Como executar
 
-1. Clonar o repositório
+### Requisitos
 
-git clone https://github.com/SKYRONN-gif/despesasJDBC.git
+* Java 17
+* Maven
+* Apache Tomcat 9
+* PostgreSQL
 
-2. Criar o banco de dados PostgreSQL
+> Precisa ser o Tomcat 9: o projeto usa `javax.servlet`, e do Tomcat 10 em diante o pacote virou `jakarta.servlet`.
 
-3. Criar as tabelas `categoria` e `despesa`
+### 1. Clonar o repositório
 
-4. Configurar os dados de conexão no arquivo:
+```bash
+git clone https://github.com/NahanM/DespesasJDBC.git
+```
 
-util/ConexaoDB.java
+### 2. Criar o banco
 
-5. Executar o projeto utilizando um servidor **Apache Tomcat**
+Crie um banco vazio no PostgreSQL e rode o script `sql/schema.sql`.
 
----
+### 3. Configurar as variáveis de ambiente
+
+Os dados de conexão não ficam no código. A aplicação lê três variáveis de ambiente:
+
+| Variável      | Exemplo                                     |
+| ------------- | ------------------------------------------- |
+| `DB_URL`      | `jdbc:postgresql://localhost:5432/despesas` |
+| `DB_USER`     | `postgres`                                  |
+| `DB_PASSWORD` | `sua_senha`                                 |
+
+**No Eclipse:** aba *Servers* → duplo clique no Tomcat → *Open launch configuration* → aba *Environment* → adicione as três.
+
+**No Windows (cmd):**
+
+```bash
+setx DB_URL "jdbc:postgresql://localhost:5432/despesas"
+setx DB_USER "postgres"
+setx DB_PASSWORD "sua_senha"
+```
+
+O `setx` só vale pra janelas abertas depois dele, então reabra o terminal ou o Eclipse.
+
+### 4. Rodar
+
+No Eclipse: *File → Import → Existing Maven Projects*, adicione o projeto ao Tomcat e inicie o servidor.
+
+Acesse o frontend em `http://localhost:8080/despesas`.
+
+### Testes
+
+```bash
+mvn test
+```
 
 ## 🔄 Status do Projeto
 
-🚧 **Em desenvolvimento**
-
-Atualmente o projeto está focado no **desenvolvimento e entendimento do backend em Java utilizando JDBC**.
-
-O **frontend ainda será desenvolvido**, com o objetivo de consumir esta API e permitir interação visual com o sistema.
+✅ **Concluído.** API completa com CRUD de despesas e categorias, e frontend consumindo os endpoints.
 
 ---
 
