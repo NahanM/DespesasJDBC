@@ -126,7 +126,7 @@ Classes utilitárias, como a conexão com o banco de dados.
 
 POST `/despesas`
 
-''' json
+```json
 {
   "descricao": "Supermercado",
   "valor": 150.00,
@@ -134,14 +134,15 @@ POST `/despesas`
   "categoria": {
     "id": 1
   }
-} '''
+}
+```
 
 
 ---
 
 ## 📤 Exemplo de Resposta (`GET /despesas/5`)
 
-''' json
+```json
 {
   "id": 5,
   "descricao": "Supermercado",
@@ -151,7 +152,8 @@ POST `/despesas`
     "id": 1,
     "nome": "Alimentação"
   }
-} '''
+}
+```
 
 ---
 
