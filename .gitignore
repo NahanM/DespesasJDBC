@@ -3,6 +3,8 @@
 # =========================
 .metadata/
 .classpath
+.project
+.settings/
 .loadpath
 .recommenders/
 
