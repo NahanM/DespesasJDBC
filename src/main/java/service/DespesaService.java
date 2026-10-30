@@ -1,7 +1,6 @@
 package service;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -46,7 +45,7 @@ public class DespesaService {
             return false;
         }
 
-        if (despesa.getData() == null || despesa.getData().after(Date.valueOf(LocalDate.now()))) {
+        if (despesa.getData() == null || despesa.getData().isAfter(LocalDate.now())) {
             System.out.println("Data não pode ser futura");
             return false;
         }

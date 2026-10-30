@@ -3,7 +3,6 @@ package modelTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
@@ -20,13 +19,13 @@ class DespesaTest {
 
         Despesa despesa = new Despesa(
                 "Mercado",
-                new BigDecimal("-50.00"),
-                Date.valueOf(LocalDate.now()),
+                new BigDecimal("50.00"),
+                LocalDate.now(),
                 categoria
         );
 
         assertEquals("Mercado", despesa.getDescricao());
-        assertEquals(new BigDecimal("-50.00"), despesa.getValor());
+        assertEquals(new BigDecimal("50.00"), despesa.getValor());
         assertEquals(categoria, despesa.getCategoria());
     }
 
@@ -38,8 +37,8 @@ class DespesaTest {
         Despesa despesa = new Despesa(
                 1,
                 "Uber",
-                new BigDecimal("-20.00"),
-                Date.valueOf(LocalDate.now()),
+                new BigDecimal("20.00"),
+                LocalDate.now(),
                 categoria
         );
 
@@ -54,8 +53,8 @@ class DespesaTest {
 
         Despesa despesa = new Despesa(
                 "Cinema",
-                new BigDecimal("-30.00"),
-                Date.valueOf(LocalDate.now()),
+                new BigDecimal("30.00"),
+                LocalDate.now(),
                 categoria
         );
 
@@ -71,14 +70,14 @@ class DespesaTest {
 
         Despesa despesa = new Despesa(
                 "Cinema",
-                new BigDecimal("-30.00"),
-                Date.valueOf(LocalDate.now()),
+                new BigDecimal("30.00"),
+                LocalDate.now(),
                 categoria
         );
 
-        despesa.setValor(new BigDecimal("-60.00"));
+        despesa.setValor(new BigDecimal("60.00"));
 
-        assertEquals(new BigDecimal("-60.00"), despesa.getValor());
+        assertEquals(new BigDecimal("60.00"), despesa.getValor());
     }
 
     @Test
@@ -88,12 +87,12 @@ class DespesaTest {
 
         Despesa despesa = new Despesa(
                 "Cinema",
-                new BigDecimal("-30.00"),
-                Date.valueOf(LocalDate.now()),
+                new BigDecimal("30.00"),
+                LocalDate.now(),
                 categoria
         );
 
-        Date novaData = Date.valueOf("2025-05-10");
+        LocalDate novaData = LocalDate.of(2025, 5, 10);
 
         despesa.setData(novaData);
 
@@ -108,8 +107,8 @@ class DespesaTest {
 
         Despesa despesa = new Despesa(
                 "Cinema",
-                new BigDecimal("-30.00"),
-                Date.valueOf(LocalDate.now()),
+                new BigDecimal("30.00"),
+                LocalDate.now(),
                 categoria1
         );
 
@@ -126,8 +125,8 @@ class DespesaTest {
         assertThrows(IllegalArgumentException.class, () -> {
             new Despesa(
                     null,
-                    new BigDecimal("-50.00"),
-                    Date.valueOf(LocalDate.now()),
+                    new BigDecimal("50.00"),
+                    LocalDate.now(),
                     categoria
             );
         });
@@ -142,22 +141,22 @@ class DespesaTest {
             new Despesa(
                     "Mercado",
                     null,
-                    Date.valueOf(LocalDate.now()),
+                    LocalDate.now(),
                     categoria
             );
         });
     }
 
     @Test
-    void deveriaLancarExcecaoQuandoValorForZeroOuPositivo() {
+    void deveriaLancarExcecaoQuandoValorForZeroOuNegativo() {
 
         Categoria categoria = new Categoria("Alimentação");
 
         assertThrows(IllegalArgumentException.class, () -> {
             new Despesa(
                     "Mercado",
-                    new BigDecimal("10.00"),
-                    Date.valueOf(LocalDate.now()),
+                    new BigDecimal("-10.00"),
+                    LocalDate.now(),
                     categoria
             );
         });
@@ -171,7 +170,7 @@ class DespesaTest {
         assertThrows(IllegalArgumentException.class, () -> {
             new Despesa(
                     "Mercado",
-                    new BigDecimal("-50.00"),
+                    new BigDecimal("50.00"),
                     null,
                     categoria
             );
@@ -184,8 +183,8 @@ class DespesaTest {
         assertThrows(IllegalArgumentException.class, () -> {
             new Despesa(
                     "Mercado",
-                    new BigDecimal("-50.00"),
-                    Date.valueOf(LocalDate.now()),
+                    new BigDecimal("50.00"),
+                    LocalDate.now(),
                     null
             );
         });

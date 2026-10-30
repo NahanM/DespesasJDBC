@@ -32,6 +32,7 @@ public class CategoriaServlet extends HttpServlet {
 
         if (salvou) {
             response.setStatus(HttpServletResponse.SC_CREATED);
+            preparaResponseJSON(response);
             mapper.writeValue(response.getWriter(), categoria);
         } else {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro ao salvar categoria");
@@ -50,6 +51,7 @@ public class CategoriaServlet extends HttpServlet {
 
         // escreve a resposta
         if (atualizou) {
+            preparaResponseJSON(response);
             mapper.writeValue(response.getWriter(), categoria);
         } else {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Categoria não encontrada");

@@ -1,10 +1,10 @@
 package repository;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class DespesaRepository {
                 rs.getInt("id"),
                 rs.getString("descricao"),
                 rs.getBigDecimal("valor"),
-                rs.getDate("data"),
+                rs.getObject("data", LocalDate.class),
                 new Categoria(rs.getInt("categoria_id"), rs.getString("categoria_nome"))
         );
     }
@@ -104,6 +104,7 @@ public class DespesaRepository {
         String sql = """
             INSERT INTO despesa (descricao, valor, data, categoria_id)
             VALUES (?, ?, ?, ?)
+            RETURNING id
         """;
 
         try (
@@ -113,12 +114,16 @@ public class DespesaRepository {
 
             stmt.setString(1, despesa.getDescricao());
             stmt.setBigDecimal(2, despesa.getValor());
-            stmt.setDate(3, despesa.getData());
+            stmt.setObject(3, despesa.getData());
             stmt.setInt(4, despesa.getCategoria().getId());
 
-            int linhasAfetadas = stmt.executeUpdate();
+            try (ResultSet rs = stmt.executeQuery()) {
 
-            return linhasAfetadas > 0;
+                if (rs.next()) {
+                    despesa.setId(rs.getInt("id"));
+                    return true;
+                }
+            }
 
         } catch (SQLException e) {
             System.err.println("Erro ao salvar despesa");
@@ -147,7 +152,7 @@ public class DespesaRepository {
 
             stmt.setString(1, despesa.getDescricao());
             stmt.setBigDecimal(2, despesa.getValor());
-            stmt.setDate(3, despesa.getData());
+            stmt.setObject(3, despesa.getData());
             stmt.setInt(4, despesa.getCategoria().getId());
             stmt.setInt(5, despesa.getId());
 

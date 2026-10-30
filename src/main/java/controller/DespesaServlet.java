@@ -73,6 +73,7 @@ public class DespesaServlet extends HttpServlet {
 
         if (salvou) {
             response.setStatus(HttpServletResponse.SC_CREATED);
+            preparaResponseJSON(response);
             mapper.writeValue(response.getWriter(), despesa);
         } else {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro ao salvar despesa");
@@ -88,6 +89,7 @@ public class DespesaServlet extends HttpServlet {
         boolean atualizou = repository.atualizar(despesa);
 
         if (atualizou) {
+            preparaResponseJSON(response);
             mapper.writeValue(response.getWriter(), despesa);
         } else {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Despesa não encontrada");
