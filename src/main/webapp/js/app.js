@@ -41,6 +41,18 @@ fetch(API_URL)
 
 
 // ================================
+// FUNÇÃO AUXILIAR: escapar HTML
+// ================================
+// textContent guarda o valor como texto puro, então o innerHTML devolve as tags
+// escapadas e o navegador mostra o que o usuário digitou em vez de executar
+function escaparHTML(texto) {
+    const elemento = document.createElement("div");
+    elemento.textContent = texto;
+    return elemento.innerHTML;
+}
+
+
+// ================================
 // FUNÇÃO: preencher a tabela
 // ================================
 function preencherTabela(despesas) {
@@ -60,8 +72,8 @@ function preencherTabela(despesas) {
 		// monta conteudo
         linha.innerHTML =
             "<td>" + d.id + "</td>" +
-            "<td>" + d.descricao + "</td>" +
-            "<td>" + d.categoria.nome + "</td>" +
+            "<td>" + escaparHTML(d.descricao) + "</td>" +
+            "<td>" + escaparHTML(d.categoria.nome) + "</td>" +
             "<td>" + d.data + "</td>" +
             "<td>R$ " + d.valor + "</td>" +
 			"<td>" +
