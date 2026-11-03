@@ -250,3 +250,5 @@ Este projeto foi criado com o objetivo de **aprofundar o entendimento sobre como
 ## 📚 Contexto do Projeto
 
 Este projeto foi desenvolvido como parte de estudos sobre desenvolvimento backend em Java, com foco em compreender como funciona a comunicação com banco de dados utilizando JDBC e Servlets.
+
+Projeto desenvolvido durante o curso Técnico em Desenvolvimento de Sistemas do SENAI-PR, com a ajuda do professor Carlos Correia, principalmente na configuração do Apache Tomcat e do Maven. Os commits em nome dele são dessa ajuda, como a migração para o Maven e a conversão dos valores para reais.
